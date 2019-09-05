@@ -1,10 +1,7 @@
-FROM alpine:3.10.2 AS git_layer
-RUN apk update && apk upgrade && apk add --no-cache bash git openssh
-RUN git clone https://github.com/MarcGeorgeCatalin/kubernetesBasicApp.git
-
 FROM maven:3.6.1-jdk-12 as maven_layer
 WORKDIR /opt/basicApp
-COPY --from=git_layer kubernetesBasicApp .
+COPY src src
+COPY pom.xml .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:8-jdk
